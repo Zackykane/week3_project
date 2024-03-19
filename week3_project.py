@@ -12,17 +12,48 @@ class RentalProperty:
         roi = (net_income / self.cost_of_investment) * 100
         return roi
 
-# Input values
-cost_of_investment = float(input("Enter the cost of investment: $"))
-annual_income = float(input("Enter the annual income from the rental property: $"))
-annual_expenses = float(input("Enter the annual expenses for the rental property: $"))
+class PropertyPortfolio:
+    def __init__(self):
+        self.properties = []
 
-# Create an instance of RentalProperty
-property1 = RentalProperty(cost_of_investment, annual_income, annual_expenses)
+    def add_property(self, property):
+        self.properties.append(property)
 
-# Calculate ROI
-roi = property1.calculate_roi()
+    def calculate_total_roi(self):
+        total_roi = 0
+        for property in self.properties:
+            total_roi += property.calculate_roi()
+        return total_roi / len(self.properties)
 
-# Print the ROI
-print(f"\nReturn on Investment (ROI) for the rental property is: {roi:.2f}%")
+def main():
+    portfolio = PropertyPortfolio()
 
+    while True:
+        print("\n1. Add a property")
+        print("2. Calculate total ROI")
+        print("3. Remove a property")
+        print("4. Exit")
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            cost_of_investment = float(input("Enter the cost of investment: $"))
+            annual_income = float(input("Enter the annual income from the rental property: $"))
+            annual_expenses = float(input("Enter the annual expenses for the rental property: $"))
+            property = RentalProperty(cost_of_investment, annual_income, annual_expenses)
+            portfolio.add_property(property)
+        elif choice == 2:
+            if len(portfolio.properties) == 0:
+                print("No properties added yet. Please add a property first.")
+        elif choice == 3:
+            index = int(input("Enter the index of the property to remove: "))
+            if portfolio.remove_property(index):
+                print("Property removed successfully.")
+            else:
+                print("Invalid index. No property was removed.")
+        elif choice == 4:
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
